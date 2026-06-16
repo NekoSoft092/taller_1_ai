@@ -32,7 +32,7 @@ def _remember_frontier(problem: SearchProblem, frontier: Any) -> None:
 
 def depthFirstSearch(problem: SearchProblem) -> list[str]:
     """Search the deepest nodes in the search tree first.
-
+    
     Tips:
     - Return the action list accumulated along the path, not the node sequence.
     - Call `_remember_frontier` whenever the frontier changes.
@@ -40,7 +40,23 @@ def depthFirstSearch(problem: SearchProblem) -> list[str]:
     """
 
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    nodo_comienzo= problem.getStartState()
+    pila_info=utils.Stack()
+    pila_info.push((nodo_comienzo, [], set()))
+    _remember_frontier(problem, pila_info)
+    
+    while not pila_info.isEmpty():
+        nodo_actual,acciones,visitados=pila_info.pop()
+        _remember_frontier(problem, pila_info)
+        if problem.isGoalState(nodo_actual):
+            return acciones
+        if nodo_actual not in visitados:
+            visitados.add(nodo_actual)
+            for nodo_siguiente, accion, costo in problem.getSuccessors(nodo_actual):
+                pila_info.push((nodo_siguiente, acciones+[accion], visitados.copy()))
+                _remember_frontier(problem, pila_info)
+    
+    return []
     ### END YOUR CODE ###
 
 
