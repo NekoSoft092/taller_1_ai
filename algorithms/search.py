@@ -148,7 +148,32 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> list[str]:
     """
 
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    frontera = utils.PriorityQueue()
+    estadoInicial = problem.getStartState()
+    costos_g = {estadoInicial: 0}
+    prioridadInicial = 0 + heuristic(estadoInicial, problem)
+    
+    frontera.push((estadoInicial, [], 0.0), prioridadInicial)
+    
+    while not frontera.isEmpty():
+        estadoActual, caminoActual, gActual = frontera.pop()
+        
+        if problem.isGoalState(estadoActual):
+            return caminoActual
+            
+        if gActual > costos_g.get(estadoActual, float('inf')):
+            continue
+            
+        for siguienteEstado, accion, costoTramo in problem.getSuccessors(estadoActual):
+            nuevo_g = gActual + costoTramo
+            
+            if siguienteEstado not in costos_g or nuevo_g < costos_g[siguienteEstado]:
+                costos_g[siguienteEstado] = nuevo_g
+                prioridad_f = nuevo_g + heuristic(siguienteEstado, problem)
+                nuevoCamino = caminoActual + [accion]
+                frontera.push((siguienteEstado, nuevoCamino, nuevo_g), prioridad_f)
+                
+    return []
     ### END YOUR CODE ###
 
 

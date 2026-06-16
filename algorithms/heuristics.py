@@ -22,9 +22,14 @@ def straightLineHeuristic(state: str, problem: Any) -> float:
     - Use `problem.graph.coordinates` and `haversine_km`.
     - Return 0 when the problem optimizes number of stops, not kilometers.
     """
+    if problem.cost_mode == "stops":
+        return 0
+    else:
+        origen = problem.graph.coordinates(state)
+        destino = problem.graph.coordinates(problem.goal)
 
-    ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    return haversine_km(origen, destino) #Esto devuelve un numero
+
     ### END YOUR CODE ###
 
 
