@@ -53,7 +53,7 @@ def depthFirstSearch(problem: SearchProblem) -> list[str]:
         if nodo_actual not in visitados:
             visitados.add(nodo_actual)
             for nodo_siguiente, accion, costo in problem.getSuccessors(nodo_actual):
-                pila_info.push((nodo_siguiente, acciones+[accion], visitados.copy()))
+                pila_info.push((nodo_siguiente, acciones+[accion], visitados))
                 _remember_frontier(problem, pila_info)
     
     return []
@@ -69,7 +69,26 @@ def breadthFirstSearch(problem: SearchProblem) -> list[str]:
     """
 
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    nodo_comienzo = problem.getStartState()
+    cola_info = utils.Queue()
+    visitados = set()
+    
+    cola_info.push((nodo_comienzo, []))
+    visitados.add(nodo_comienzo)
+    _remember_frontier(problem, cola_info)
+    
+    while not cola_info.isEmpty():
+        nodo_actual, acciones = cola_info.pop()
+        _remember_frontier(problem, cola_info)
+        if problem.isGoalState(nodo_actual):
+            return acciones
+        for nodo_siguiente, accion, costo in problem.getSuccessors(nodo_actual):
+            if nodo_siguiente not in visitados:
+                visitados.add(nodo_siguiente)
+                cola_info.push((nodo_siguiente, acciones + [accion]))
+                _remember_frontier(problem, cola_info)
+    
+    return []
     ### END YOUR CODE ###
 
 
