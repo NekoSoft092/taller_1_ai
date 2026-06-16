@@ -23,9 +23,12 @@ def straightLineHeuristic(state: str, problem: Any) -> float:
     - Return 0 when the problem optimizes number of stops, not kilometers.
     """
 
-    ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
-    ### END YOUR CODE ###
+    if problem.cost_mode == "stops":
+        return 0.0
+    
+    curr_coords = problem.graph.coordinates(state)
+    goal_coords = problem.graph.coordinates(problem.goal)
+    return haversine_km(curr_coords, goal_coords)
 
 
 def multiDeliveryHeuristic(state: tuple[str, frozenset[str]], problem: Any) -> float:
@@ -43,9 +46,29 @@ def multiDeliveryHeuristic(state: tuple[str, frozenset[str]], problem: Any) -> f
     - Reuse `_mst_cost` with a distance function defined over delivery node IDs.
     """
 
-    ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
-    ### END YOUR CODE ###
+    current, pending = state
+    
+    if not pending:
+        return 0.0
+    
+    cache = problem.heuristicInfo
+    
+    def get_distance(src, dst):
+        key = (src, dst)
+        if key not in cache:
+            from algorithms.search import uniformCostSearch
+            from algorithms.problems import SingleDeliveryProblem
+            
+            temp_problem = SingleDeliveryProblem(problem.graph, src, dst, cost_mode="distance")
+            actions = uniformCostSearch(temp_problem)
+            cache[key] = temp_problem.getCostOfActions(actions)
+        return cache[key]
+    
+    pending_list = list(pending)
+    min_dist = min(get_distance(current, delivery) for delivery in pending_list)
+    mst = _mst_cost(pending_list, get_distance)
+    
+    return min_dist + mst
 
 
 def straightLineMultiDeliveryHeuristic(
@@ -58,9 +81,21 @@ def straightLineMultiDeliveryHeuristic(
     - This trades some informativeness for much faster heuristic evaluation.
     """
 
-    ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
-    ### END YOUR CODE ###
+    current, pending = state
+    
+    if not pending:
+        return 0.0
+    
+    def geo_distance(src, dst):
+        src_coords = problem.graph.coordinates(src)
+        dst_coords = problem.graph.coordinates(dst)
+        return haversine_km(src_coords, dst_coords)
+    
+    pending_list = list(pending)
+    min_dist = min(geo_distance(current, delivery) for delivery in pending_list)
+    mst = _mst_cost(pending_list, geo_distance)
+    
+    return min_dist + mst
 
 
 def _mst_cost(nodes: list[str], distance_fn) -> float:

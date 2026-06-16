@@ -28,7 +28,7 @@ def build_route_map(
     m = folium.Map(
         location=[4.6, -74.1],
         zoom_start=6,
-        tiles="OpenStreetMap",
+        tiles="CartoDB positron",
         control_scale=True,
         prefer_canvas=True,
     )
