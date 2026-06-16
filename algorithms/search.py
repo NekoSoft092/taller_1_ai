@@ -58,17 +58,86 @@ def breadthFirstSearch(problem: SearchProblem) -> list[str]:
 
 
 def uniformCostSearch(problem: SearchProblem) -> list[str]:
-    """Search the node with the lowest path cost first.
-
-    Tips:
-    - Use path cost `g(n)` as the priority queue key.
-    - Ignore stale frontier entries whose stored `g` is worse than the best known.
-    """
-
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
-    ### END YOUR CODE ###
 
+    # Primera Interación, Inspirada en el Código Base de GeeksforGeeks
+    # https://www.geeksforgeeks.org/artificial-intelligence/uniform-cost-search-ucs-in-ai/
+    # ------------------------------------------------------------
+    # priority_queue = [(0, start)]
+    # visited = {start: (0, None)}
+    #
+    # while priority_queue:
+    #     current_cost, current_node = heapq.heappop(priority_queue)
+    #
+    #     if current_node == goal:
+    #         return current_cost, reconstruct_path(visited, start, goal)
+    #
+    #     for neighbor, cost in graph[current_node]:
+    #         total_cost = current_cost + cost
+    #         if neighbor not in visited or total_cost < visited[neighbor][0]:
+    #             visited[neighbor] = (total_cost, current_node)
+    #             heapq.heappush(priority_queue, (total_cost, neighbor))
+    # return None
+    #
+    # Cambios realizados:
+    # Se identificaron los choques entre el codigo base de GeeksforGeeks
+    # y los objetos del framework del proyecto (librerias).
+    # Implementación:
+    # 1. Se cambio el "heapq" a "utils.PriorityQueue()".
+    # 2. Se cambió "graph[nodo]" por "problem.getSuccessors(estado)".
+    # 3. Se eliminó la necesidad de usar un reconstruct_path
+    # ------------------------------------------------------------
+    # Versión Preliminar, Antes de Cambios Finales:
+    # ------------------------------------------------------------
+    # frontera = utils.PriorityQueue()
+    # mejor_costo = {}
+    # inicio = problem.getStartState()
+    # mejor_costo[inicio] = 0
+    # frontera.push((inicio, 0), 0)
+    # while not frontera.isEmpty():
+    #     estado, g = frontera.pop()
+    #
+    #     if problem.isGoalState(estado):
+    #         return estado
+    #
+    #     for sucesor, accion, costo_paso in problem.getSuccessors(estado):
+    #         nuevo_g = g + costo_paso
+    #         if nuevo_g < mejor_costo.get(sucesor, float("inf")):
+    #             mejor_costo[sucesor] = nuevo_g
+    #             frontera.push((sucesor, nuevo_g), nuevo_g)
+    #
+    # Prompt Usado Con Herramienta IA:
+    # "Tengo este código adaptado de GeeksforGeeks que ya maneja el costo g
+    # y los sucesores del proyecto, pero necesito ayuda para ajustarlo bien.
+    # No sé cómo hacer para que me regrese la lista del camino de acciones.
+    # Si vez otro detalle que pueda dar un probleam al probar avisame."
+    # ------------------------------------------------------------
+    # Versión final
+    frontera = utils.PriorityQueue()
+    mejor_costo = {}
+
+    inicio = problem.getStartState()
+    mejor_costo[inicio] = 0
+    frontera.push((inicio, [], 0), 0)
+
+    while not frontera.isEmpty():
+        estado, acciones, g = frontera.pop()
+
+        if g > mejor_costo.get(estado, float("inf")):
+            continue
+        if problem.isGoalState(estado):
+            return acciones
+
+        for sucesor, accion, costo_paso in problem.getSuccessors(estado):
+            nuevo_g = g + costo_paso
+
+            if nuevo_g < mejor_costo.get(sucesor, float("inf")):
+                mejor_costo[sucesor] = nuevo_g
+                frontera.push((sucesor, acciones + [accion], nuevo_g), nuevo_g)
+
+        _remember_frontier(problem, frontera)
+    return []
+    ### END YOUR CODE ###
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> list[str]:
     """Search the node with the lowest `g(n) + h(n)` first.
