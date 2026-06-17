@@ -30,7 +30,97 @@
       "n76898"
     ]
   },
-  "multi_national_challenge": {
+  "multi_andes_caribe_a": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "nullHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n39739",
+      "n15395",
+      "n241545",
+      "n76898"
+    ]
+  },
+  "multi_andes_caribe_b": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "straightLineHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n39739",
+      "n15395",
+      "n241545",
+      "n76898"
+    ]
+  },
+  "multi_andes_caribe_c": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "multiDeliveryHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n39739",
+      "n15395",
+      "n241545",
+      "n76898"
+    ]
+  },
+  "multi_andes_caribe_d": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "straightLineMultiDeliveryHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n39739",
+      "n15395",
+      "n241545",
+      "n76898"
+    ]
+  },
+  "multi_national_challenge_a": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "nullHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n15395",
+      "n39739",
+      "n1006018",
+      "n260990",
+      "n96684",
+      "n214091"
+    ]
+  },
+  "multi_national_challenge_b": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "straightLineHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n15395",
+      "n39739",
+      "n1006018",
+      "n260990",
+      "n96684",
+      "n214091"
+    ]
+  },
+  "multi_national_challenge_c": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "multiDeliveryHeuristic",
+    "start": "n1037511",
+    "deliveries": [
+      "n15395",
+      "n39739",
+      "n1006018",
+      "n260990",
+      "n96684",
+      "n214091"
+    ]
+  },
+  "multi_national_challenge_d": {
     "problem": "multi",
     "algorithm": "astar",
     "heuristic": "straightLineMultiDeliveryHeuristic",
@@ -44,6 +134,55 @@
       "n214091"
     ]
   },
+  "tunja_barrancabermeja_large_instance_a": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "nullHeuristic",
+    "start": "n903555",
+    "deliveries": [
+      "n802361",
+      "n622441",
+      "n250283",
+      "n763173"
+    ]
+  },
+  "tunja_barrancabermeja_large_instance_b": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "straightLineHeuristic",
+    "start": "n903555",
+    "deliveries": [
+      "n802361",
+      "n622441",
+      "n250283",
+      "n763173"
+    ]
+  },
+  "tunja_barrancabermeja_large_instance_c": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "multiDeliveryHeuristic",
+    "start": "n903555",
+    "deliveries": [
+      "n802361",
+      "n622441",
+      "n250283",
+      "n763173"
+    ]
+  },
+  "tunja_barrancabermeja_large_instance_d": {
+    "problem": "multi",
+    "algorithm": "astar",
+    "heuristic": "straightLineMultiDeliveryHeuristic",
+    "start": "n903555",
+    "deliveries": [
+      "n802361",
+      "n622441",
+      "n250283",
+      "n763173"
+    ]
+  },
+  
   "ids_local_depth": {
     "problem": "stops",
     "algorithm": "ids",
