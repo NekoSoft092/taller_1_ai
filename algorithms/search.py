@@ -222,7 +222,28 @@ def depthLimitedSearch(problem: SearchProblem, limit: int) -> list[str] | None:
     """
 
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    frontier = utils.Stack()
+    start = problem.getStartState()
+    frontier.push((start, [], 0))  # (node, actions, depth)
+    on_path = set()
+    
+    while not frontier.isEmpty():
+        _remember_frontier(problem, frontier)
+        node, actions, depth = frontier.pop()
+        
+        if depth > 0 and node in on_path:
+            on_path.discard(node)
+        
+        if problem.isGoalState(node):
+            return actions
+        
+        if depth < limit:
+            on_path.add(node)
+            for next_node, action, cost in problem.getSuccessors(node):
+                if next_node not in on_path:
+                    frontier.push((next_node, actions + [action], depth + 1))
+    
+    return None
     ### END YOUR CODE ###
 
 
@@ -237,7 +258,16 @@ def iterativeDeepeningSearch(
     """
 
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    if max_depth is None:
+        max_depth = 50
+    
+    for depth_limit in range(max_depth + 1):
+        result = depthLimitedSearch(problem, depth_limit)
+        if result is not None:
+            problem._ids_depth_found = depth_limit
+            return result
+    
+    return []
     ### END YOUR CODE ###
 
 
