@@ -220,10 +220,51 @@ def depthLimitedSearch(problem: SearchProblem, limit: int) -> list[str] | None:
     - Depth counts actions taken from the start, not recursive calls made.
     - Keep a set of nodes on the current path to avoid revisiting them in one branch.
     """
-
+    # Implementación en pseudocódigo de https://www.geeksforgeeks.org/artificial-intelligence/depth-limited-search-for-ai/  con la que se iteró con la herramienta de IA.
+    #def depth_limited_search(node, goal_test, limit):
+    #if goal_test(node):
+    #   return node
+    #elif limit == 0:
+    #    return "cutoff"
+    #else:
+    #    cutoff_occurred = False
+    #    for child in expand(node):
+    #        result = depth_limited_search(child, goal_test, limit - 1)
+    #        if result == "cutoff":
+    #            cutoff_occurred = True
+    #        elif result != "failure":
+    #            return result
+    #    return "cutoff" if cutoff_occurred else "failure"
+    # Prompt Usado Con Herramienta IA: Teniendo en cuenta el pseudocódigo compartido y el contexto del problema, 
+    # ayúdame a adaptar el código teniendo en cuenta que: (1) La función recibe un problem y un límite, no un nodo. 
+    # (2) La función deber retornar la lista de acciones tomada, o None si no se encuentra solución dentro del límite. 
+    # (3) Se utiliza getSuccessors para expandir los nodos. 
+    # (4) No se admiten ciclos en la rama actual.
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    def recursive_dls(nodo, acciones, visitados_rama, limite_actual):
+        if problem.isGoalState(nodo):
+            return acciones
+        if limite_actual == 0:
+            return None
+        for nodo_siguiente, accion, costo in problem.getSuccessors(nodo):
+            if nodo_siguiente not in visitados_rama:
+                visitados_rama.add(nodo_siguiente)
+                resultado = recursive_dls(nodo_siguiente, acciones + [accion], visitados_rama, limite_actual - 1)
+                if resultado is not None:
+                    return resultado
+                visitados_rama.remove(nodo_siguiente)
+        return None
+
+    nodo_inicio = problem.getStartState()
+    return recursive_dls(nodo_inicio, [], {nodo_inicio}, limit)
     ### END YOUR CODE ###
+    # Cambios del pseudocódigo a la implementación
+    #1. El pseudocódigo recibe el nodo directamente. Aquí se obtiene con problem.getStartState() y se pasa a la función recursiva.
+    #2. El pseudocódigo retorna "cutoff" o "failure" como strings. Aquí se retorna la lista de acciones si encuentra la meta, o None si no encuentra solución.
+    #3. El pseudocódigo usa goal_test(node). Aquí se usa problem.isGoalState(nodo).
+    #4. El pseudocódigo usa expand(node). Aquí se usa problem.getSuccessors(nodo) que devuelve tripletas (nodo_siguiente, accion, costo).
+    #5. El pseudocódigo no rastrea el camino. Aquí se pasa acciones + [accion] en cada llamada recursiva para construir la ruta.
+    #6. El pseudocódigo no evita ciclos. Aquí se usa visitados_rama que se agrega al entrar a un nodo y se elimina al retroceder, garantizando que solo se evitan ciclos dentro de la rama actual.
 
 
 def iterativeDeepeningSearch(
@@ -237,7 +278,15 @@ def iterativeDeepeningSearch(
     """
 
     ### YOUR CODE HERE ###
-    utils.raiseNotDefined()
+    depth = 0
+    while max_depth is None or depth <= max_depth:
+        resultado = depthLimitedSearch(problem, depth)
+        if resultado is not None:
+            problem._ids_depth_found = depth
+            return resultado
+        depth += 1
+    
+    return []
     ### END YOUR CODE ###
 
 
